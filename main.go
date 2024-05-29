@@ -8,12 +8,13 @@ import (
 	"log"
 	"net/http"
 )
+
 const (
-	host = "localhost"
-	port = 5432
-	user = "postgres"
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
 	password = "postgres"
-	dbname = "postgres"
+	dbname   = "postgres"
 )
 
 var db *sql.DB
@@ -34,6 +35,7 @@ func main() {
 	}
 
 	r := chi.NewRouter()
+
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Ok"))
 	})

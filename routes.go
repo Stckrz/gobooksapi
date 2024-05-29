@@ -1,11 +1,9 @@
 package main
 
 import (
-	// "database/sql"
 	"encoding/json"
-	"net/http"
 	"github.com/go-chi/chi/v5"
-	// "golang.org/x/text/cases"
+	"net/http"
 )
 
 type BookHandler struct {
@@ -33,6 +31,7 @@ func (b BookHandler) listBooks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(books)
 }
 
@@ -40,13 +39,13 @@ func (b BookHandler) getBook(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	rows, err := db.Query("SELECT * FROM books WHERE id = $1", id)
-	if err != nil{
+	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 	defer rows.Close()
 	var books []Book
-	for rows.Next(){
+	for rows.Next() {
 		var u Book
 		if err := rows.Scan(&u.ID, &u.CreatedAt, &u.Title, &u.Author, &u.OriginalLanguage, &u.AuthorId); err != nil {
 			http.Error(w, err.Error(), 500)
@@ -60,10 +59,9 @@ func (b BookHandler) getBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(books)
 
-
 }
 
-func (b BookHandler) postBook(w http.ResponseWriter, r *http.Request){
+func (b BookHandler) postBook(w http.ResponseWriter, r *http.Request) {
 	var book Book
 	if err := json.NewDecoder(r.Body).Decode(&book); err != nil {
 		http.Error(w, err.Error(), 500)

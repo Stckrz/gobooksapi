@@ -8,12 +8,21 @@ import (
 	"log"
 	"net/http"
 )
+const (
+	host = "localhost"
+	port = 5432
+	user = "postgres"
+	password = "postgres"
+	dbname = "postgres"
+)
 
 var db *sql.DB
 
 func main() {
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+
 	var err error
-	db, err = sql.Open("postgres", "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable")
+	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
 		log.Fatalf("unable to connect to db: %v\n", err)
 	}

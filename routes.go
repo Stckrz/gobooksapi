@@ -57,6 +57,7 @@ func (b BookHandler) getBook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(books)
 
 }
@@ -76,6 +77,7 @@ func (b BookHandler) postBook(w http.ResponseWriter, r *http.Request) {
 
 	book.ID = newId
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(book)
 
 }
@@ -102,5 +104,6 @@ func (b BookHandler) editBook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Item not found", 500)
 	}
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write([]byte("Item updated successfully"))
 }
